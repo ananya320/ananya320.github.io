@@ -219,6 +219,7 @@
     transition:border-color 0.2s;
   }
   .proj-shot:hover{border-color:var(--accent-dim);}
+  video.proj-shot{cursor:default;background:#000;}
 
   /* lightbox */
   .lightbox{
@@ -265,6 +266,56 @@
     .timeline{padding-left:20px;}
     .tl-dot{left:-25px;}
   }
+
+  /* ===== AI-engineer polish ===== */
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(rgba(94,234,212,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.035) 1px,transparent 1px);
+    background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);}
+  #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:linear-gradient(90deg,var(--accent),#7C9CFF,var(--warm));box-shadow:0 0 12px var(--accent);}
+  h1 .accent-text{background:linear-gradient(90deg,var(--accent),#7C9CFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .proj-card,.edu-card{position:relative;background:linear-gradient(180deg,rgba(26,37,64,.55),rgba(17,26,46,.55));backdrop-filter:blur(6px);}
+  .proj-card::before,.edu-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .3s;
+    background:linear-gradient(135deg,var(--accent),#7C9CFF,transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+  .proj-card:hover::before,.edu-card:hover::before{opacity:1;}
+  .skill-tag{transition:all .2s;}.skill-tag:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+  .skill-tag.new{border-color:var(--warm);color:var(--warm);}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* pipeline */
+  .pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:8px;}
+  .pipe-node{flex:1 1 120px;min-width:120px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 14px;position:relative;text-align:center;}
+  .pipe-node b{display:block;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px;}
+  .pipe-node span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);}
+  .pipe-node.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-dim),0 0 28px -6px rgba(94,234,212,.55);}
+  .pipe-node.active b{color:var(--accent);}
+  .pipe-arrow{align-self:center;color:var(--accent-dim);font-family:'JetBrains Mono',monospace;padding:0 6px;}
+  .pipe-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);}
+  .pipe-note b{color:var(--accent);font-weight:500;}
+  @media(max-width:700px){.pipe-arrow{display:none;}.pipe-node{margin-bottom:8px;}}
+
+  /* terminal contact */
+  .term{max-width:560px;margin:0 auto 36px;text-align:left;background:#070B15;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.8),0 0 40px -18px rgba(94,234,212,.35);}
+  .term-bar{display:flex;gap:7px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(26,37,64,.5);}
+  .term-bar i{width:10px;height:10px;border-radius:50%;background:#3a4560;display:block;}
+  .term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
+  .term-bar span{margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);}
+  .term-body{padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--text-dim);}
+  .term-body .p{color:var(--accent);}.term-body .k{color:#7C9CFF;}.term-body a{color:var(--text);border-bottom:1px dashed var(--accent-dim);}
+  .term-body a:hover{color:var(--accent);border-color:var(--accent);}
+  .caret{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0}}
+
+  /* robot cursor */
+  #bot{position:fixed;left:0;top:0;width:44px;height:52px;z-index:300;pointer-events:none;opacity:0;transition:opacity .3s;will-change:transform;}
+  #bot.on{opacity:1;}
+  #bot svg{width:100%;height:100%;overflow:visible;transition:transform .2s;filter:drop-shadow(0 6px 10px rgba(94,234,212,.35));}
+  #bot.hot svg{transform:scale(1.25);}
+  #bot .eye{fill:var(--accent);animation:botblink 4s infinite;transform-box:fill-box;transform-origin:center;}
+  #bot .ant{animation:botant 1.2s ease-in-out infinite;}
+  @keyframes botblink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  @keyframes botant{50%{fill:var(--warm)}}
+  @media (pointer:coarse){#bot{display:none;}}
 </style>
 </head>
 <body>
@@ -287,10 +338,10 @@
   <div class="wrap">
     <div class="hero-eyebrow"><span class="dot"></span> open to AI Engineer roles</div>
     <h1>Building systems that<br>know what to <span class="accent-text">retrieve</span>.</h1>
-    <p class="hero-sub">I'm Ananya — a final-year CS undergrad building RAG pipelines, agentic workflows, and LLM-integrated applications. I care about the parts most demos skip: retrieval quality, token cost, and latency.</p>
+    <p class="hero-sub">I'm Ananya — a CS graduate (B.Tech, July 2026) building RAG pipelines, multi-agent workflows, and LLM-integrated applications. I care about the parts most demos skip: retrieval quality, token cost, and latency.</p>
     <div class="hero-links">
       <a class="btn btn-primary" href="#projects">View projects →</a>
-      <a class="btn btn-secondary" href="resume.pdf" target="_blank">Download résumé</a>
+      <a class="btn btn-secondary" href="resume.pdf" download="Ananya_Singh_Rajvanshi_Resume.pdf">Download résumé ↓</a>
       <a class="btn btn-secondary" href="https://github.com/ananya320" target="_blank">GitHub ↗</a>
     </div>
 
@@ -317,11 +368,25 @@
     <div class="sec-head"><span class="sec-tag mono">[ 01 ]</span><span class="sec-title">About</span></div>
     <p class="about-text">I build applied LLM systems end to end — from chunking strategy and embedding choice through to deployment. At <strong>FrugalX</strong>, I shipped a RAG pipeline for an AI book-writing app that hit <strong>85% relevant chunk retrieval in the top-5</strong> and cut prompt token usage by <strong>~30%</strong> without losing output quality. I'm most interested in the applied ML engineering problems: evaluation, cost, and reliability — not just getting a demo to work once.</p>
     <div class="stat-row">
-      <div class="stat"><div class="stat-num mono">3</div><div class="stat-label">internships</div></div>
+      <div class="stat"><div class="stat-num mono">4</div><div class="stat-label">industry roles</div></div>
       <div class="stat"><div class="stat-num mono">85%</div><div class="stat-label">top-5 retrieval accuracy</div></div>
       <div class="stat"><div class="stat-num mono">~30%</div><div class="stat-label">token cost reduction</div></div>
-      <div class="stat"><div class="stat-num mono">2026</div><div class="stat-label">graduating</div></div>
+      <div class="stat"><div class="stat-num mono">Jul 2026</div><div class="stat-label">B.Tech graduate</div></div>
     </div>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="wrap reveal">
+    <div class="sec-head"><span class="sec-tag mono">[ 01.5 ]</span><span class="sec-title">How I build RAG</span></div>
+    <div class="pipe" id="pipe">
+      <div class="pipe-node"><b>Chunk</b><span>split + overlap</span></div><div class="pipe-arrow">→</div>
+      <div class="pipe-node"><b>Embed</b><span>vectors</span></div><div class="pipe-arrow">→</div>
+      <div class="pipe-node"><b>Retrieve</b><span>ChromaDB · top-k</span></div><div class="pipe-arrow">→</div>
+      <div class="pipe-node"><b>Trim context</b><span>top-3 · ~30% fewer tokens</span></div><div class="pipe-arrow">→</div>
+      <div class="pipe-node"><b>Generate</b><span>Gemini · LangGraph</span></div>
+    </div>
+    <div class="pipe-note">// measured: <b>85%</b> top-5 relevant retrieval · <b>~10%</b> lower hallucination · <b>1–3s</b> response on AWS EC2</div>
   </div>
 </section>
 
@@ -332,20 +397,31 @@
 
       <div class="tl-item">
         <div class="tl-dot"></div>
-        <div class="tl-date mono">Dec 2025 — Apr 2026</div>
-        <div class="tl-role">RAG Developer</div>
-        <div class="tl-org mono">FrugalX</div>
+        <div class="tl-date mono">Sep 2026 — Oct 2026</div>
+        <div class="tl-role">AI Automation Engineer Intern</div>
+        <div class="tl-org mono">PerformDigital</div>
         <ul class="tl-list">
-          <li>Built a RAG pipeline for an AI book-writing application using LangChain and LangGraph for orchestration, with document chunking, embeddings, and vector-based retrieval via ChromaDB</li>
-          <li>Integrated the Gemini API with prompt engineering to reduce hallucination rate by ~10%, achieving 85% relevant chunk retrieval within the top-5 results</li>
-          <li>Cut prompt token usage by ~30% by limiting context to the top-3 relevant chunks, lowering inference cost while maintaining output quality</li>
-          <li>Containerized the pipeline with Docker and deployed on AWS EC2, achieving consistent response times of 1-3 seconds</li>
+          <li>Building AI-driven automation workflows using LLMs, APIs, and Gemma 3</li>
+          <li>Developing agentic AI integrations to automate business processes and reduce manual effort</li>
         </ul>
       </div>
 
       <div class="tl-item">
         <div class="tl-dot"></div>
-        <div class="tl-date mono">Jun 2025 — Oct 2025</div>
+        <div class="tl-date mono">Dec 2025 — Sep 2026</div>
+        <div class="tl-role">RAG Developer</div>
+        <div class="tl-org mono">FrugalX</div>
+        <ul class="tl-list">
+          <li>Built a production RAG pipeline for an AI book-writing application, using LangChain and LangGraph for multi-step agentic orchestration, with document chunking, embeddings, and vector-based retrieval via ChromaDB</li>
+          <li>Integrated the Gemini API with prompt engineering to reduce hallucination rate by ~10%, achieving 85% relevant chunk retrieval within the top-5 results</li>
+          <li>Cut prompt token usage by ~30% by limiting context to the top-3 relevant chunks, lowering inference cost while maintaining output quality</li>
+          <li>Containerized the pipeline with Docker and deployed to AWS EC2 through an automated CI/CD workflow, achieving consistent response times of 1–3 seconds</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date mono">Jun 2025 — Nov 2025</div>
         <div class="tl-role">GenAI Intern</div>
         <div class="tl-org mono">Smart Interz — Google Cloud-run Program</div>
         <ul class="tl-list">
@@ -361,9 +437,9 @@
         <div class="tl-role">Data Analytics Intern</div>
         <div class="tl-org mono">Deloitte</div>
         <ul class="tl-list">
-          <li>Analyzed datasets exceeding 1,000+ records using Python and statistical analysis to identify key trends and derive actionable insights</li>
-          <li>Built interactive dashboards in Tableau to visualize complex data patterns and support stakeholder decision-making</li>
-          <li>Automated data cleaning and preprocessing workflows using Python, improving analysis efficiency</li>
+          <li>Analyzed datasets exceeding 1,000 records using Python and statistical analysis to identify key trends and derive actionable insights</li>
+          <li>Built interactive Tableau dashboards to visualize complex data patterns and support stakeholder decision-making</li>
+          <li>Automated data cleaning and preprocessing workflows in Python, improving analysis efficiency</li>
         </ul>
       </div>
 
@@ -380,23 +456,34 @@
         <div class="proj-title">AI Book Generating App</div>
         <div class="proj-status">shipped</div>
       </div>
-      <img class="proj-shot" src="images/bookai-screenshot.jpg" alt="AI Book Generating App screenshot" onclick="openLightbox(this.src)">
-      <p class="proj-desc">Generates book ideas, outlines, and full chapters from a user prompt using RAG orchestration — the core system behind the FrugalX retrieval numbers above.</p>
+      <video class="proj-shot" src="images/bookai-demo.mp4" preload="metadata" poster="images/bookai-screenshot.jpg" autoplay muted loop playsinline controls onerror="this.remove()"></video>
+      <p class="proj-desc">A full-stack AI story generator (FastAPI + Google Gemini) built on a 5-stage multi-agent pipeline for content generation, editing, and summarization. Features a custom CSS 3D interface and a persistent story archive with continue, edit, and regenerate. Deployed on Render with GitHub CI/CD; resolved production issues including SDK migration and secret management.</p>
       <div class="proj-stack">
-        <span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">Gemini API</span><span class="tag">Jinja2</span>
+        <span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">Gemini API</span><span class="tag">Jinja2</span><span class="tag">CI/CD</span>
       </div>
       <div class="proj-metrics">
         <span class="metric">top-5 retrieval: <b>85%</b></span>
         <span class="metric">token savings: <b>~30%</b></span>
         <span class="metric">response time: <b>1–3s</b></span>
       </div>
+      <!-- EVAL WRITE-UP: fill in the real details, then uncomment -->
+      <!--
+      <details class="eval-note">
+        <summary class="mono">How I measured the 85% top-5 retrieval</summary>
+        <p><b>Test set:</b> [N] questions written against [N] source documents.<br>
+        <b>Metric:</b> a query counts as a hit if a chunk containing the answer is in the top 5 results (hit rate@5).<br>
+        <b>Setup:</b> chunk size [X], overlap [Y], embedding model [Z], ChromaDB, top_k = 5.<br>
+        <b>Token savings:</b> compared average prompt tokens with top-5 vs top-3 context (~30% lower) while checking output quality on [N] samples.<br>
+        <b>Known limits:</b> [what the test set does not cover].</p>
+      </details>
+      -->
       <div class="proj-links">
         <a href="https://bookai-sck2.onrender.com/ui" target="_blank">Live demo ↗</a>
         <a href="https://github.com/ananya320/bookai" target="_blank">View code ↗</a>
         <a href="javascript:void(0)" onclick="toggleEmbed('bookaiEmbed', this)" class="embed-toggle">Try it here ⌄</a>
       </div>
       <div class="proj-embed" id="bookaiEmbed">
-        <div class="embed-note mono">⏳ Free-tier server — first load can take ~30s to wake up</div>
+        <div class="embed-note mono">⏳ Free-tier server — first load can take ~30s to wake up. Short on time? Watch the demo video above.</div>
         <iframe class="embed-frame" src="about:blank" data-src="https://bookai-sck2.onrender.com/ui" loading="lazy"></iframe>
       </div>
     </div>
@@ -406,10 +493,10 @@
         <div class="proj-title">Personalized Learning AI</div>
         <div class="proj-status">shipped</div>
       </div>
-      <img class="proj-shot" src="images/learningai-screenshot.jpg" alt="Personalized Learning AI screenshot" onclick="openLightbox(this.src)">
-      <p class="proj-desc">An AI-powered web app that adapts learning content in real time using NLP and LLM-based recommendation, driven by live user performance data. Also supports grounded Q&A over a user-uploaded PDF via retrieval.</p>
+      <video class="proj-shot" src="images/learningai-demo.mp4" poster="images/learningai-screenshot.jpg" autoplay muted loop playsinline controls preload="metadata" onerror="this.remove()"></video>
+      <p class="proj-desc">A full-stack adaptive learning platform that uses Elo rating and Bayesian Knowledge Tracing to personalize content difficulty and track mastery in real time. Expectation-Maximization is implemented from scratch to fit model parameters from real user data instead of fixed constants. A TF-IDF RAG pipeline grounds AI-generated content in user-uploaded documents. Deployed across three cloud platforms (Render, Vercel, MongoDB Atlas), with deployment and dependency issues debugged independently.</p>
       <div class="proj-stack">
-        <span class="tag">FastAPI</span><span class="tag">MongoDB</span><span class="tag">React.js</span><span class="tag">NLP</span><span class="tag">Python</span>
+        <span class="tag">FastAPI</span><span class="tag">MongoDB</span><span class="tag">React.js</span><span class="tag">TF-IDF</span><span class="tag">Bayesian Methods</span><span class="tag">Python</span>
       </div>
       <div class="proj-links">
         <a href="https://github.com/ananya320/personalized-learning-ai" target="_blank">View code ↗</a>
@@ -440,27 +527,35 @@
     <div class="skill-group">
       <div class="skill-group-label">AI / ML / GenAI</div>
       <div class="skill-tags">
-        <span class="skill-tag">LLMs</span><span class="skill-tag">RAG</span><span class="skill-tag">Prompt Engineering</span>
-        <span class="skill-tag">Embeddings</span><span class="skill-tag">Vector Search</span><span class="skill-tag">LangChain</span>
-        <span class="skill-tag">LangGraph</span><span class="skill-tag">NLP</span><span class="skill-tag">Retrieval Evaluation</span>
+        <span class="skill-tag">LLMs</span><span class="skill-tag">RAG</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">Embeddings</span><span class="skill-tag">Vector Search</span><span class="skill-tag">TF-IDF</span><span class="skill-tag">Multi-Agent Systems</span><span class="skill-tag">Agentic Orchestration</span><span class="skill-tag">Retrieval Evaluation</span><span class="skill-tag">Bayesian Knowledge Tracing</span><span class="skill-tag">Expectation-Maximization</span><span class="skill-tag">NLP</span><span class="skill-tag">Machine Learning</span><span class="skill-tag">Deep Learning</span>
       </div>
     </div>
 
     <div class="skill-group">
-      <div class="skill-group-label">Programming & Tools</div>
+      <div class="skill-group-label">Frameworks, APIs &amp; Platforms</div>
       <div class="skill-tags">
-        <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">C</span>
-        <span class="skill-tag">SQL</span><span class="skill-tag">FastAPI</span><span class="skill-tag">React.js</span>
-        <span class="skill-tag">MongoDB</span><span class="skill-tag">ChromaDB</span><span class="skill-tag">JDBC</span>
-        <span class="skill-tag">Jinja2</span><span class="skill-tag">Docker</span><span class="skill-tag">AWS (EC2)</span>
+        <span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Google Gemini API</span><span class="skill-tag">Gemma 3</span><span class="skill-tag">Anthropic Claude API</span><span class="skill-tag">Google Vertex AI</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span><span class="skill-tag new">n8n</span>
       </div>
     </div>
 
     <div class="skill-group">
-      <div class="skill-group-label">Data & Other</div>
+      <div class="skill-group-label">Languages</div>
       <div class="skill-tags">
-        <span class="skill-tag">Power BI</span><span class="skill-tag">Tableau</span><span class="skill-tag">Excel</span>
-        <span class="skill-tag">Pandas</span><span class="skill-tag">Analytical Thinking</span><span class="skill-tag">Team Collaboration</span>
+        <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">SQL</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-label">Backend, DevOps &amp; Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">FastAPI</span><span class="skill-tag">REST APIs</span><span class="skill-tag">React.js</span><span class="skill-tag">MongoDB</span><span class="skill-tag">ChromaDB</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">Git</span><span class="skill-tag">AWS (EC2)</span><span class="skill-tag">Render</span><span class="skill-tag">Vercel</span><span class="skill-tag">JDBC</span><span class="skill-tag">Jinja2</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-group-label">Data &amp; Visualization</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Power BI</span><span class="skill-tag">Tableau</span><span class="skill-tag">Excel</span><span class="skill-tag">Statistical Analysis</span>
       </div>
     </div>
   </div>
@@ -472,8 +567,15 @@
     <div class="edu-card tilt">
       <div class="edu-degree">B.Tech, Computer Science</div>
       <div class="edu-school">Dr. A. P. J. Abdul Kalam Technical University, Lucknow</div>
-      <div class="edu-date mono">2022 — 2026 · First Division</div>
-      <div class="edu-course">Relevant coursework: Machine Learning, NLP, Data Structures & Algorithms, Database Management Systems, React.js, Python</div>
+      <div class="edu-date mono">2022 — 2026 · Graduated July 2026 · First Division</div>
+      <div class="edu-course">Relevant coursework: Machine Learning, NLP, Data Structures & Algorithms, Database Management Systems, Python, React.js</div>
+    </div>
+    <div class="edu-card tilt" style="margin-top:20px;">
+      <div class="edu-degree">Certifications</div>
+      <div class="edu-school">Generative AI Development Program — Smart Interz, run on Google Cloud</div>
+      <div class="edu-date mono">2025</div>
+      <div class="edu-school" style="margin-top:14px;">Anthropic Claude with Google Vertex AI</div>
+      <div class="edu-date mono">2026</div>
     </div>
   </div>
 </section>
@@ -483,12 +585,24 @@
     <div class="sec-tag mono" style="display:block;margin-bottom:14px;">[ 06 ]</div>
     <div class="sec-title">Let's talk.</div>
     <p>Open to AI Engineer roles — reach out directly or find me below.</p>
+    <div class="term reveal">
+      <div class="term-bar"><i></i><i></i><i></i><span>ananya@dev ~ contact</span></div>
+      <div class="term-body">
+        <div><span class="p">$</span> whoami <span class="k">→</span> Ananya Singh Rajvanshi, AI Engineer</div>
+        <div><span class="p">$</span> email <span class="k">→</span> <a href="mailto:singhrajvanshiananya@gmail.com">singhrajvanshiananya@gmail.com</a></div>
+        <div><span class="p">$</span> email2 <span class="k">→</span> <a href="mailto:rajvanshiananyasingh@gmail.com">rajvanshiananyasingh@gmail.com</a></div>
+        <div><span class="p">$</span> phone <span class="k">→</span> <a href="tel:+919336092755">+91 93360 92755</a></div>
+        <div><span class="p">$</span> status <span class="k">→</span> open to AI Engineer roles <span class="caret"></span></div>
+      </div>
+    </div>
     <div class="contact-row">
       <a class="btn btn-primary" href="mailto:singhrajvanshiananya@gmail.com">Email me →</a>
+      <a class="btn btn-secondary" href="tel:+919336092755">Call +91 93360 92755</a>
+      <a class="btn btn-secondary" href="resume.pdf" download="Ananya_Singh_Rajvanshi_Resume.pdf">Download résumé ↓</a>
       <a class="btn btn-secondary" href="https://linkedin.com/in/ananya-singh-rajvanshi-847252276" target="_blank">LinkedIn ↗</a>
       <a class="btn btn-secondary" href="https://github.com/ananya320" target="_blank">GitHub ↗</a>
     </div>
-    <div class="foot-bottom">singhrajvanshiananya@gmail.com · 9336092755</div>
+    <div class="foot-bottom">singhrajvanshiananya@gmail.com · rajvanshiananyasingh@gmail.com · +91 93360 92755</div>
   </div>
 </footer>
 
@@ -671,5 +785,37 @@
   setInterval(runRetrieval, 5000);
 </script>
 
+<div id="bot" aria-hidden="true"><svg viewBox="0 0 44 52"><line x1="22" y1="3" x2="22" y2="11" stroke="#5EEAD4" stroke-width="2"/><circle class="ant" cx="22" cy="3" r="3" fill="#5EEAD4"/><rect x="5" y="11" width="34" height="24" rx="8" fill="#111A2E" stroke="#5EEAD4" stroke-width="2"/><circle class="eye" id="botL" cx="15" cy="23" r="3.5"/><circle class="eye" id="botR" cx="29" cy="23" r="3.5"/><rect x="12" y="38" width="20" height="10" rx="4" fill="#1A2540" stroke="#5EEAD4" stroke-width="1.5"/><circle cx="22" cy="43" r="1.8" fill="#F0A868"/></svg></div>
+<div id="progress"></div>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  addEventListener('scroll',function(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
+  var els=document.querySelectorAll('.proj-card,.edu-card,.tl-item,.skill-group,.stat-row');
+  els.forEach(function(e){e.classList.add('reveal');});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){var t=x.target;t.classList.add('in');io.unobserve(t);setTimeout(function(){t.classList.remove('reveal','in');},900);}});},{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(function(e){io.observe(e);});
+  }else{document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('in');});}
+  var nodes=document.querySelectorAll('#pipe .pipe-node'),i=0;
+  if(nodes.length){setInterval(function(){nodes.forEach(function(n){n.classList.remove('active');});nodes[i%nodes.length].classList.add('active');i++;},900);}
+  var bot=document.getElementById('bot');
+  if(bot && matchMedia('(pointer:fine)').matches){
+    var mx=innerWidth/2,my=innerHeight/2,bx=mx,by=my,L=document.getElementById('botL'),R=document.getElementById('botR');
+    addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;bot.classList.add('on');},{passive:true});
+    document.addEventListener('mouseleave',function(){bot.classList.remove('on');});
+    document.addEventListener('mouseover',function(e){bot.classList.toggle('hot',!!e.target.closest('a,button,.btn,.skill-tag'));});
+    (function loop(){
+      var tx=mx+16,ty=my+14,dx=tx-bx,dy=ty-by;
+      bx+=dx*.12;by+=dy*.12;
+      var tilt=Math.max(-18,Math.min(18,dx*.25)),bob=Math.sin(Date.now()/260)*2;
+      bot.style.transform='translate('+bx+'px,'+(by+bob)+'px) rotate('+tilt+'deg)';
+      var ex=Math.max(-2,Math.min(2,dx/30)),ey=Math.max(-2,Math.min(2,dy/30));
+      L.setAttribute('cx',15+ex);R.setAttribute('cx',29+ex);L.setAttribute('cy',23+ey);R.setAttribute('cy',23+ey);
+      requestAnimationFrame(loop);
+    })();
+  }
+})();
+</script>
 </body>
 </html>
