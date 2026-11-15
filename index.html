@@ -1,821 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ananya Singh Rajvanshi — AI Engineer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="three.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Ananya Singh Rajvanshi, AI engineer building RAG pipelines, agent workflows and LLM apps.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+<title>Ananya Singh Rajvanshi – AI Engineer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-  :root{
-    --bg: #0A0F1C;
-    --surface: #111A2E;
-    --surface-hi: #1A2540;
-    --line: #23304C;
-    --text: #E7ECF6;
-    --text-dim: #8D96AC;
-    --text-faint: #5A6377;
-    --accent: #5EEAD4;
-    --accent-dim: #2A5B54;
-    --warm: #F0A868;
-    --radius: 10px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter',sans-serif;
-    line-height:1.6;
-    overflow-x:hidden;
-  }
-  ::selection{background:var(--accent-dim);color:var(--accent);}
-
-  .mono{font-family:'JetBrains Mono',monospace;}
-  .display{font-family:'Space Grotesk',sans-serif;}
-
-  a{color:inherit;text-decoration:none;}
-
-  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
-
-  /* NAV */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(10,15,28,0.85);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px;}
-  .nav-brand{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--accent);letter-spacing:0.5px;}
-  .nav-brand span{color:var(--text-faint);}
-  .nav-links{display:flex;gap:28px;font-size:13px;color:var(--text-dim);}
-  .nav-links a{transition:color 0.2s;position:relative;}
-  .nav-links a:hover{color:var(--text);}
-  .nav-cta{
-    font-size:13px;padding:7px 16px;border:1px solid var(--accent-dim);border-radius:6px;
-    color:var(--accent);transition:all 0.2s;
-  }
-  .nav-cta:hover{background:var(--accent-dim);}
-
-  /* HERO */
-  .hero{
-    min-height:100vh;
-    display:flex;flex-direction:column;justify-content:center;
-    padding-top:64px;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-canvas-wrap{
-    position:absolute;inset:0;z-index:0;
-    pointer-events:none;
-    opacity:0.65;
-    -webkit-mask-image:radial-gradient(ellipse 75% 65% at 50% 42%, #000 35%, transparent 88%);
-            mask-image:radial-gradient(ellipse 75% 65% at 50% 42%, #000 35%, transparent 88%);
-  }
-  #heroCanvas{width:100%;height:100%;display:block;}
-  .hero > .wrap{position:relative;z-index:1;}
-  .hero-eyebrow{
-    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-faint);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-
-  .hero h1{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:clamp(36px, 6vw, 64px);
-    line-height:1.08;
-    letter-spacing:-1.5px;
-    margin-bottom:20px;
-    text-shadow:0 2px 30px var(--bg), 0 2px 10px var(--bg);
-  }
-  .hero h1 .accent-text{color:var(--accent);}
-
-  .hero-sub{
-    font-size:17px;color:var(--text-dim);max-width:560px;margin-bottom:40px;
-  }
-
-  .hero-links{display:flex;gap:14px;margin-bottom:64px;flex-wrap:wrap;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;
-    padding:12px 22px;border-radius:7px;
-    display:inline-flex;align-items:center;gap:8px;
-    transition:all 0.2s;
-  }
-  .btn-primary{background:var(--accent);color:#06120F;font-weight:600;}
-  .btn-primary:hover{background:#7DF5E0;transform:translateY(-3px) scale(1.03);box-shadow:0 10px 26px -8px rgba(94,234,212,0.5);}
-  .btn-secondary{border:1px solid var(--line);color:var(--text-dim);}
-  .btn-secondary:hover{border-color:var(--accent-dim);color:var(--text);transform:translateY(-3px);}
-  .btn{transition:all 0.25s cubic-bezier(.2,.9,.3,1.3);}
-
-  /* CHUNK RETRIEVAL VISUAL — signature element */
-  .chunk-demo{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:22px 24px;
-    max-width:640px;
-  }
-  .chunk-demo-label{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);
-    text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;
-    display:flex;justify-content:space-between;
-  }
-  .chunk-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
-  .chunk{
-    font-family:'JetBrains Mono',monospace;font-size:12px;
-    padding:9px 12px;border-radius:6px;
-    background:var(--surface-hi);color:var(--text-faint);
-    border:1px solid var(--line);
-    transition:all 0.4s;
-    cursor:default;
-  }
-  .chunk.retrieved{
-    background:rgba(94,234,212,0.08);
-    border-color:var(--accent);
-    color:var(--accent);
-  }
-  .chunk-score{
-    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);
-    display:flex;align-items:center;gap:10px;
-  }
-  .score-bar{width:120px;height:4px;background:var(--surface-hi);border-radius:2px;overflow:hidden;}
-  .score-fill{height:100%;background:var(--accent);width:0%;transition:width 1.2s ease;}
-  .score-val{color:var(--accent);font-weight:600;}
-
-  /* SECTION shared */
-  section{padding:90px 0;border-top:1px solid var(--line);}
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:44px;}
-  .sec-tag{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);}
-  .sec-title{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:600;letter-spacing:-0.5px;}
-
-  /* ABOUT */
-  .about-text{color:var(--text-dim);font-size:16px;max-width:680px;margin-bottom:28px;}
-  .about-text strong{color:var(--text);font-weight:500;}
-  .stat-row{display:flex;gap:40px;flex-wrap:wrap;margin-top:36px;}
-  .stat{}
-  .stat-num{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:600;color:var(--accent);}
-  .stat-label{font-size:12px;color:var(--text-faint);margin-top:4px;font-family:'JetBrains Mono',monospace;}
-
-  /* EXPERIENCE */
-  .timeline{position:relative;padding-left:28px;border-left:1px solid var(--line);}
-  .tl-item{position:relative;margin-bottom:48px;}
-  .tl-item:last-child{margin-bottom:0;}
-  .tl-dot{
-    position:absolute;left:-33px;top:6px;width:10px;height:10px;border-radius:50%;
-    background:var(--bg);border:2px solid var(--accent);
-  }
-  .tl-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);margin-bottom:6px;}
-  .tl-role{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;margin-bottom:2px;}
-  .tl-org{color:var(--accent);font-size:14px;margin-bottom:14px;}
-  .tl-list{list-style:none;color:var(--text-dim);font-size:14.5px;}
-  .tl-list li{position:relative;padding-left:18px;margin-bottom:8px;}
-  .tl-list li::before{content:"→";position:absolute;left:0;color:var(--text-faint);}
-
-  /* PROJECTS */
-  .proj-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:28px 30px;margin-bottom:20px;transition:border-color 0.2s, box-shadow 0.2s;
-    will-change:transform;
-  }
-  .proj-card:hover{border-color:var(--accent-dim);box-shadow:0 20px 40px -20px rgba(0,0,0,0.6);}
-  .proj-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px;}
-  .proj-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;}
-  .proj-status{
-    font-family:'JetBrains Mono',monospace;font-size:11px;padding:4px 10px;border-radius:20px;
-    background:var(--accent-dim);color:var(--accent);white-space:nowrap;
-  }
-  .proj-status.wip{background:rgba(240,168,104,0.12);color:var(--warm);}
-  .proj-desc{color:var(--text-dim);font-size:14.5px;margin-bottom:16px;}
-  .proj-stack{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
-  .tag{
-    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);
-    border:1px solid var(--line);padding:4px 10px;border-radius:5px;
-  }
-  .proj-metrics{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:18px;}
-  .metric{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);}
-  .metric b{color:var(--accent);font-weight:600;}
-  .proj-links{display:flex;gap:16px;flex-wrap:wrap;}
-  .proj-links a{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim);border-bottom:1px solid var(--line);padding-bottom:2px;transition:all 0.2s;}
-  .proj-links a:hover{color:var(--accent);border-color:var(--accent);}
-  .embed-toggle{color:var(--accent) !important;border-color:var(--accent-dim) !important;}
-  .proj-embed{
-    max-height:0;overflow:hidden;
-    transition:max-height 0.4s ease;
-    margin-top:0;
-  }
-  .proj-embed.open{max-height:640px;margin-top:20px;}
-  .embed-note{font-size:11px;color:var(--text-faint);margin-bottom:10px;}
-  .embed-frame{
-    width:100%;height:560px;border:1px solid var(--line);border-radius:8px;
-    background:var(--surface-hi);
-  }
-  .proj-shot{
-    width:100%;border-radius:8px;border:1px solid var(--line);
-    margin-bottom:18px;display:block;
-    cursor:zoom-in;
-    transition:border-color 0.2s;
-  }
-  .proj-shot:hover{border-color:var(--accent-dim);}
-  video.proj-shot{cursor:default;background:#000;}
-
-  /* lightbox */
-  .lightbox{
-    position:fixed;inset:0;background:rgba(6,9,16,0.92);
-    display:none;align-items:center;justify-content:center;
-    z-index:1000;padding:40px;cursor:zoom-out;
-  }
-  .lightbox.open{display:flex;}
-  .lightbox img{max-width:100%;max-height:100%;border-radius:10px;border:1px solid var(--line);}
-
-  /* SKILLS */
-  .skill-group{margin-bottom:26px;}
-  .skill-group-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
-  .skill-tags{display:flex;flex-wrap:wrap;gap:8px;}
-  .skill-tag{
-    font-size:13.5px;padding:7px 14px;border-radius:20px;
-    background:var(--surface);border:1px solid var(--line);color:var(--text-dim);
-    transition:all 0.2s cubic-bezier(.2,.9,.3,1.3);cursor:default;
-  }
-  .skill-tag:hover{
-    transform:translateY(-4px) rotate(-2deg) scale(1.06);
-    border-color:var(--accent);color:var(--accent);
-    background:var(--accent-dim);
-  }
-
-  /* EDUCATION */
-  .edu-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;}
-  .edu-degree{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:4px;}
-  .edu-school{color:var(--text-dim);font-size:14px;margin-bottom:2px;}
-  .edu-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);margin-bottom:14px;}
-  .edu-course{font-size:13.5px;color:var(--text-faint);}
-
-  /* FOOTER / CONTACT */
-  footer{padding:80px 0 50px;text-align:center;}
-  footer .sec-title{font-size:32px;margin-bottom:14px;}
-  footer p{color:var(--text-dim);margin-bottom:32px;}
-  .contact-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:60px;}
-  .foot-bottom{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);}
-
-  @media(max-width:640px){
-    .nav-links{display:none;}
-    section{padding:60px 0;}
-    .stat-row{gap:24px;}
-    .timeline{padding-left:20px;}
-    .tl-dot{left:-25px;}
-  }
-
-  /* ===== AI-engineer polish ===== */
-  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-    background-image:linear-gradient(rgba(94,234,212,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(94,234,212,.035) 1px,transparent 1px);
-    background-size:44px 44px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);}
-  #progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;background:linear-gradient(90deg,var(--accent),#7C9CFF,var(--warm));box-shadow:0 0 12px var(--accent);}
-  h1 .accent-text{background:linear-gradient(90deg,var(--accent),#7C9CFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-  .proj-card,.edu-card{position:relative;background:linear-gradient(180deg,rgba(26,37,64,.55),rgba(17,26,46,.55));backdrop-filter:blur(6px);}
-  .proj-card::before,.edu-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;opacity:0;transition:opacity .3s;
-    background:linear-gradient(135deg,var(--accent),#7C9CFF,transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
-  .proj-card:hover::before,.edu-card:hover::before{opacity:1;}
-  .skill-tag{transition:all .2s;}.skill-tag:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
-  .skill-tag.new{border-color:var(--warm);color:var(--warm);}
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);}
-  .reveal.in{opacity:1;transform:none;}
-
-  /* pipeline */
-  .pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:8px;}
-  .pipe-node{flex:1 1 120px;min-width:120px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 14px;position:relative;text-align:center;}
-  .pipe-node b{display:block;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px;}
-  .pipe-node span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);}
-  .pipe-node.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-dim),0 0 28px -6px rgba(94,234,212,.55);}
-  .pipe-node.active b{color:var(--accent);}
-  .pipe-arrow{align-self:center;color:var(--accent-dim);font-family:'JetBrains Mono',monospace;padding:0 6px;}
-  .pipe-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);}
-  .pipe-note b{color:var(--accent);font-weight:500;}
-  @media(max-width:700px){.pipe-arrow{display:none;}.pipe-node{margin-bottom:8px;}}
-
-  /* terminal contact */
-  .term{max-width:560px;margin:0 auto 36px;text-align:left;background:#070B15;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.8),0 0 40px -18px rgba(94,234,212,.35);}
-  .term-bar{display:flex;gap:7px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(26,37,64,.5);}
-  .term-bar i{width:10px;height:10px;border-radius:50%;background:#3a4560;display:block;}
-  .term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
-  .term-bar span{margin-left:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);}
-  .term-body{padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--text-dim);}
-  .term-body .p{color:var(--accent);}.term-body .k{color:#7C9CFF;}.term-body a{color:var(--text);border-bottom:1px dashed var(--accent-dim);}
-  .term-body a:hover{color:var(--accent);border-color:var(--accent);}
-  .caret{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;animation:blink 1s steps(1) infinite;}
-  @keyframes blink{50%{opacity:0}}
-
-  /* robot cursor */
-  #bot{position:fixed;left:0;top:0;width:44px;height:52px;z-index:300;pointer-events:none;opacity:0;transition:opacity .3s;will-change:transform;}
-  #bot.on{opacity:1;}
-  #bot svg{width:100%;height:100%;overflow:visible;transition:transform .2s;filter:drop-shadow(0 6px 10px rgba(94,234,212,.35));}
-  #bot.hot svg{transform:scale(1.25);}
-  #bot .eye{fill:var(--accent);animation:botblink 4s infinite;transform-box:fill-box;transform-origin:center;}
-  #bot .ant{animation:botant 1.2s ease-in-out infinite;}
-  @keyframes botblink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
-  @keyframes botant{50%{fill:var(--warm)}}
-  @media (pointer:coarse){#bot{display:none;}}
+:root{--bg:#060918;--s:#0F1431;--s2:#171E45;--ink:#EEF0FF;--mut:#98A2D0;--line:#252D5E;--ac:#8C80FF;--hit:#3DE3D8;--q:#FFB347;
+color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;margin:0;letter-spacing:-.02em;line-height:1.06}
+:focus-visible{outline:3px solid var(--hit);outline-offset:3px;border-radius:8px}
+.w{max-width:1180px;margin:0 auto;padding:0 20px}
+nav{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font:800 20px "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink)}
+nav div a{color:var(--mut);text-decoration:none;font-size:14px;margin-left:18px}nav div a:hover{color:var(--ink)}
+.hero{position:relative;min-height:640px;padding:20px 0 50px}
+#gl{position:absolute;inset:0 -20px;width:calc(100% + 40px);height:100%;z-index:0}
+.hg{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center}
+.st{display:inline-flex;gap:8px;align-items:center;color:var(--mut);font-size:14px;margin-bottom:20px}
+.st i{width:9px;height:9px;border-radius:50%;background:var(--hit);box-shadow:0 0 14px var(--hit)}
+h1{font-size:clamp(40px,6vw,70px);font-weight:800}
+.lead{font-size:18px;color:var(--mut);max-width:44ch;margin:20px 0 26px}
+.btn{display:inline-block;padding:12px 20px;border-radius:999px;border:1px solid var(--line);background:rgba(15,20,49,.6);color:var(--ink);text-decoration:none;font:500 14px "Instrument Sans",sans-serif;cursor:pointer;margin:0 8px 8px 0}
+.btn.p{background:var(--ac);border-color:var(--ac);color:#0A0A1F;font-weight:600}
+.btn:hover{filter:brightness(1.15)}
+.chat{background:rgba(15,20,49,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:24px;box-shadow:0 0 60px -20px var(--ac);overflow:hidden}
+.ch{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:600}
+.ch label{font-size:13px;color:var(--mut);font-weight:400;display:flex;gap:8px;align-items:center}
+.ch input{accent-color:var(--hit);width:90px}
+#log{height:250px;overflow:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;font-size:15px}
+.m{max-width:92%;padding:10px 13px;border-radius:14px;background:var(--s2);white-space:pre-wrap}
+.m.u{align-self:flex-end;background:var(--ac);color:#0A0A1F}
+.src{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.src span{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--hit);color:var(--hit)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px}
+.chip{border:1px solid var(--line);background:none;color:var(--mut);border-radius:99px;padding:5px 11px;font:13px "Instrument Sans",sans-serif;cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--ac)}
+.in{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.in input{flex:1;min-width:0;background:var(--s2);border:1px solid var(--line);color:var(--ink);border-radius:12px;padding:11px 13px;font:15px "Instrument Sans",sans-serif}
+.in button{border:0;background:var(--hit);color:#04141A;font-weight:600;border-radius:12px;padding:0 18px;cursor:pointer;font-family:inherit}
+section{padding:44px 0}
+h2{font-size:clamp(28px,3.4vw,42px);margin-bottom:8px}
+.sub{color:var(--mut);margin:0 0 24px;max-width:60ch}
+.card{background:var(--s);border:1px solid var(--line);border-radius:22px;padding:22px}
+.tabs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:8px}.tabs .btn.on{background:var(--ac);border-color:var(--ac);color:#0A0A1F;font-weight:600}
+.tl{position:relative;padding-left:34px;display:grid;gap:18px}
+.tl::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--ac),var(--hit),transparent)}
+.job{position:relative}
+.job::before{content:"";position:absolute;left:-33px;top:28px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--hit);box-shadow:0 0 14px var(--hit)}
+.job .top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px}
+.job h3{font-size:22px}.job .co{color:var(--hit);font-weight:600;margin:2px 0 0}.job .dt{color:var(--mut);font-size:14px}
+.job ul{margin:12px 0 0;padding-left:20px;color:var(--mut)}.job li{margin:6px 0}
+.met{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.met span{padding:6px 12px;border-radius:12px;background:var(--s2);font-size:13.5px}.met b{color:var(--hit)}
+.pipe{overflow-x:auto}
+.pipe svg{min-width:720px;width:100%;height:auto;display:block}
+.pn rect{fill:var(--s2);stroke:var(--line);stroke-width:1.5}
+.pn text{fill:var(--ink);font:600 15px "Instrument Sans",sans-serif;text-anchor:middle}
+.pn .d{fill:var(--mut);font:400 12px "Instrument Sans",sans-serif}
+.fl{stroke:var(--hit);stroke-width:2.5;fill:none;stroke-dasharray:6 8;animation:fl 1.2s linear infinite}
+@keyframes fl{to{stroke-dashoffset:-14}}
+.pn.on rect{stroke:var(--ac);fill:#1E2560}
+.proj{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.proj .card{display:flex;flex-direction:column;gap:12px}
+.proj h3{font-size:22px}.proj p{margin:0;color:var(--mut);font-size:15px}
+.tech{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.tech span{font-size:12.5px;padding:3px 10px;border-radius:99px;background:var(--s2);color:var(--mut)}
+.proj button{align-self:flex-start;margin:0}
+dialog{background:var(--s);color:var(--ink);border:1px solid var(--ac);border-radius:24px;padding:0;max-width:640px;width:calc(100% - 32px);box-shadow:0 0 80px -10px var(--ac)}
+#vd{max-width:980px}
+dialog::backdrop{background:rgba(3,5,16,.75)}
+.dl{padding:28px}.dl h2{font-size:34px;margin-bottom:16px}
+.dl h3{font-size:15px;color:var(--hit);margin:18px 0 6px;font-family:"Instrument Sans",sans-serif;letter-spacing:0}
+.dl p,.dl li{color:var(--mut);margin:0}.dl ul{margin:0;padding-left:20px}
+.sk{display:flex;flex-wrap:wrap;gap:8px}
+.sk span{padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--s);font-size:14px}
+.demo video{width:100%;border-radius:18px;border:1px solid var(--line);display:block;box-shadow:0 0 60px -20px var(--ac)}
+footer{padding:50px 0 60px;border-top:1px solid var(--line)}footer h2{font-size:clamp(30px,5vw,54px);max-width:18ch}
+@media(max-width:900px){.hg{grid-template-columns:1fr}.proj{grid-template-columns:1fr}.hero{min-height:0}nav div a:not(:last-child){display:none}}
+@media(prefers-reduced-motion:reduce){.fl{animation:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-
-<nav>
-  <div class="wrap">
-    <div class="nav-brand">ananya<span>.dev</span></div>
-    <div class="nav-links">
-      <a href="#about">about</a>
-      <a href="#experience">experience</a>
-      <a href="#projects">projects</a>
-      <a href="#skills">skills</a>
-    </div>
-    <a class="nav-cta" href="#contact">contact</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="hero-canvas-wrap"><canvas id="heroCanvas"></canvas></div>
-  <div class="wrap">
-    <div class="hero-eyebrow"><span class="dot"></span> open to AI Engineer roles</div>
-    <h1>Building systems that<br>know what to <span class="accent-text">retrieve</span>.</h1>
-    <p class="hero-sub">I'm Ananya — a CS graduate (B.Tech, July 2026) building RAG pipelines, multi-agent workflows, and LLM-integrated applications. I care about the parts most demos skip: retrieval quality, token cost, and latency.</p>
-    <div class="hero-links">
-      <a class="btn btn-primary" href="#projects">View projects →</a>
-      <a class="btn btn-secondary" href="resume.pdf" download="Ananya_Singh_Rajvanshi_Resume.pdf">Download résumé ↓</a>
-      <a class="btn btn-secondary" href="https://github.com/ananya320" target="_blank">GitHub ↗</a>
-    </div>
-
-    <div class="chunk-demo tilt">
-      <div class="chunk-demo-label"><span>query.embed("how to reduce hallucination in RAG?")</span><span>top_k = 5</span></div>
-      <div class="chunk-row" id="chunkRow">
-        <span class="chunk" data-score="0.31">chunk_014</span>
-        <span class="chunk" data-score="0.42">chunk_009</span>
-        <span class="chunk" data-score="0.85">chunk_003</span>
-        <span class="chunk" data-score="0.28">chunk_027</span>
-        <span class="chunk" data-score="0.19">chunk_011</span>
-        <span class="chunk" data-score="0.37">chunk_020</span>
-      </div>
-      <div class="chunk-score">
-        best match: <span class="score-val" id="scoreVal">0.00</span>
-        <div class="score-bar"><div class="score-fill" id="scoreFill"></div></div>
-      </div>
-    </div>
-  </div>
+<div class="w">
+<nav><a class="logo" href="#top">ananya.dev</a><div><a href="#projects">Projects</a><a href="#pipeline">Pipeline</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a></div></nav>
+<header class="hero" id="top">
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="hg">
+<div>
+<div class="st"><i></i>1 year as an AI developer · open to AI engineer roles</div>
+<h1>I build systems that know what to retrieve.</h1>
+<p class="lead">AI developer with 1 year of hands-on experience building RAG pipelines, agent workflows and LLM apps. Ask my portfolio a question and watch the graph light up with the chunks it retrieves.</p>
+<a class="btn p" href="#projects">See projects</a><a class="btn" href="Ananya_Singh_Rajvanshi_Resume.pdf">Download résumé</a><a class="btn" href="https://github.com/ananya320">GitHub</a>
+</div>
+<div class="chat">
+<div class="ch"><span>Ask my portfolio</span><label>top-k <input id="k" type="range" min="1" max="6" value="3" aria-label="Chunks retrieved"><b id="kv">3</b></label></div>
+<div id="log" aria-live="polite"><div class="m">Hi, I’m a retrieval demo over Ananya’s résumé. Ask about her RAG work, deployment, agents or projects.</div></div>
+<div class="chips" id="chips"></div>
+<div class="in"><input id="q" placeholder="Ask a question…" aria-label="Your question" autocomplete="off"><button id="go" type="button">Ask</button></div>
+</div></div>
 </header>
 
-<section id="about">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-tag mono">[ 01 ]</span><span class="sec-title">About</span></div>
-    <p class="about-text">I build applied LLM systems end to end — from chunking strategy and embedding choice through to deployment. At <strong>FrugalX</strong>, I shipped a RAG pipeline for an AI book-writing app that hit <strong>85% relevant chunk retrieval in the top-5</strong> and cut prompt token usage by <strong>~30%</strong> without losing output quality. I'm most interested in the applied ML engineering problems: evaluation, cost, and reliability — not just getting a demo to work once.</p>
-    <div class="stat-row">
-      <div class="stat"><div class="stat-num mono">4</div><div class="stat-label">industry roles</div></div>
-      <div class="stat"><div class="stat-num mono">85%</div><div class="stat-label">top-5 retrieval accuracy</div></div>
-      <div class="stat"><div class="stat-num mono">~30%</div><div class="stat-label">token cost reduction</div></div>
-      <div class="stat"><div class="stat-num mono">Jul 2026</div><div class="stat-label">B.Tech graduate</div></div>
-    </div>
-  </div>
-</section>
+<section id="projects">
+<h2>Projects</h2>
+<p class="sub">Built, deployed and debugged end to end.</p>
+<div class="proj">
+<div class="card"><h3>FinPilot</h3><p>A multi-tenant AI reconciliation platform that extracts transactions from PDF, CSV and Excel and matches invoices to payments with plain-English explanations.</p><div class="tech"><span>Python</span><span>FastAPI</span><span>React</span><span>PostgreSQL</span><span>LangGraph</span><span>Gemini</span><span>ChromaDB</span><span>SQLAlchemy</span><span>MCP</span><span>JWT</span><span>GitHub Actions</span></div><div><button class="btn" data-p="fin" type="button">Read case study</button> <button class="btn" data-v="videos/finpilot_demo.mp4" data-t="FinPilot demo" type="button">Watch demo</button> <a class="btn" href="https://github.com/ananya320/finpilot">View code</a></div></div>
+<div class="card"><h3>AI Book Generating App</h3><p>A five-stage multi-agent pipeline that writes, edits and summarizes stories, with a 3D interface and a persistent archive.</p><div class="tech"><span>FastAPI</span><span>LangGraph</span><span>Gemini</span><span>ChromaDB</span></div><div><button class="btn" data-p="book" type="button">Read case study</button> <button class="btn" data-v="videos/bookai_demo.mp4" data-t="AI Book Generating App demo" type="button">Watch demo</button> <a class="btn" href="https://github.com/ananya320/bookai">View code</a></div></div>
+<div class="card"><h3>Personalized Learning AI</h3><p>Adaptive learning with Elo rating, Bayesian Knowledge Tracing and Expectation-Maximization written from scratch.</p><div class="tech"><span>FastAPI</span><span>React</span><span>MongoDB</span><span>TF-IDF</span></div><div><button class="btn" data-p="learn" type="button">Read case study</button> <button class="btn" data-v="videos/learnai_demo.mp4" data-t="Personalized Learning AI demo" type="button">Watch demo</button> <a class="btn" href="https://github.com/ananya320/personalized-learning-ai">View code</a> <a class="btn" href="https://github.com/ananya320/personalized-learning-frontend">Frontend code</a></div></div>
+</div></section>
 
 <section id="pipeline">
-  <div class="wrap reveal">
-    <div class="sec-head"><span class="sec-tag mono">[ 01.5 ]</span><span class="sec-title">How I build RAG</span></div>
-    <div class="pipe" id="pipe">
-      <div class="pipe-node"><b>Chunk</b><span>split + overlap</span></div><div class="pipe-arrow">→</div>
-      <div class="pipe-node"><b>Embed</b><span>vectors</span></div><div class="pipe-arrow">→</div>
-      <div class="pipe-node"><b>Retrieve</b><span>ChromaDB · top-k</span></div><div class="pipe-arrow">→</div>
-      <div class="pipe-node"><b>Trim context</b><span>top-3 · ~30% fewer tokens</span></div><div class="pipe-arrow">→</div>
-      <div class="pipe-node"><b>Generate</b><span>Gemini · LangGraph</span></div>
-    </div>
-    <div class="pipe-note">// measured: <b>85%</b> top-5 relevant retrieval · <b>~10%</b> lower hallucination · <b>1–3s</b> response on AWS EC2</div>
-  </div>
+<h2>How my projects think</h2>
+<p class="sub">Simplified views of how each system works. Pick a project, then select a stage to highlight it.</p>
+<div class="tabs" id="ptabs" role="group" aria-label="Choose a project"><button class="btn" data-k="fin" type="button">FinPilot</button><button class="btn" data-k="book" type="button">Book generator</button><button class="btn" data-k="learn" type="button">Learning AI</button></div>
+<div class="card pipe"><svg viewBox="0 0 900 190" role="img" aria-label="Five stage pipeline for the selected project">
+<path class="fl" d="M150 80H190M330 80H370M510 80H550M690 80H730"/>
+<g id="stages"></g></svg><div id="pd" class="sub" style="margin:10px 4px 0">Select a stage.</div></div>
 </section>
 
 <section id="experience">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-tag mono">[ 02 ]</span><span class="sec-title">Experience</span></div>
-    <div class="timeline">
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-date mono">Sep 2026 — Oct 2026</div>
-        <div class="tl-role">AI Automation Engineer Intern</div>
-        <div class="tl-org mono">PerformDigital</div>
-        <ul class="tl-list">
-          <li>Building AI-driven automation workflows using LLMs, APIs, and Gemma 3</li>
-          <li>Developing agentic AI integrations to automate business processes and reduce manual effort</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-date mono">Dec 2025 — Sep 2026</div>
-        <div class="tl-role">RAG Developer</div>
-        <div class="tl-org mono">FrugalX</div>
-        <ul class="tl-list">
-          <li>Built a production RAG pipeline for an AI book-writing application, using LangChain and LangGraph for multi-step agentic orchestration, with document chunking, embeddings, and vector-based retrieval via ChromaDB</li>
-          <li>Integrated the Gemini API with prompt engineering to reduce hallucination rate by ~10%, achieving 85% relevant chunk retrieval within the top-5 results</li>
-          <li>Cut prompt token usage by ~30% by limiting context to the top-3 relevant chunks, lowering inference cost while maintaining output quality</li>
-          <li>Containerized the pipeline with Docker and deployed to AWS EC2 through an automated CI/CD workflow, achieving consistent response times of 1–3 seconds</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-date mono">Jun 2025 — Nov 2025</div>
-        <div class="tl-role">GenAI Intern</div>
-        <div class="tl-org mono">Smart Interz — Google Cloud-run Program</div>
-        <ul class="tl-list">
-          <li>Built GenAI application modules using the Gemini API and ChromaDB for vector storage and retrieval, applying responsible and ethical AI practices throughout</li>
-          <li>Designed prompt engineering strategies and AI application architectures through structured, project-based development</li>
-          <li>Applied generative AI and NLP techniques to real-world use cases, including automated content generation and workflow automation</li>
-        </ul>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-date mono">Jan 2024 — Apr 2024</div>
-        <div class="tl-role">Data Analytics Intern</div>
-        <div class="tl-org mono">Deloitte</div>
-        <ul class="tl-list">
-          <li>Analyzed datasets exceeding 1,000 records using Python and statistical analysis to identify key trends and derive actionable insights</li>
-          <li>Built interactive Tableau dashboards to visualize complex data patterns and support stakeholder decision-making</li>
-          <li>Automated data cleaning and preprocessing workflows in Python, improving analysis efficiency</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
+<h2>Experience</h2>
+<p class="sub">One year of hands-on experience as an AI developer, building and shipping LLM systems.</p>
+<div class="tl">
+<div class="card job"><div class="top"><div><h3>AI Automation Engineer Intern</h3><p class="co">PerformDigital</p></div><span class="dt">Sep 2026 – Oct 2026</span></div>
+<ul><li>Built AI-driven automation workflows using LLMs, APIs and Gemma 3.</li><li>Built FinPilot, an AI financial operations assistant that extracts transactions from bank statements and invoices, reconciles them, explains mismatches and answers queries in chat.</li></ul>
+<div class="met"><span>Gemma 3</span><span>LangGraph</span><span>FastAPI</span><span>PostgreSQL</span><span>Docker</span></div></div>
+<div class="card job"><div class="top"><div><h3>RAG Developer</h3><p class="co">FrugalX</p></div><span class="dt">Dec 2025 – Sep 2026</span></div>
+<ul><li>Built a production RAG pipeline for an AI book-writing app, with LangChain and LangGraph orchestration, chunking, embeddings and ChromaDB retrieval.</li><li>Used the Gemini API with prompt engineering to cut hallucinations and keep answers grounded.</li><li>Limited context to the top-3 chunks to lower inference cost while keeping output quality.</li><li>Containerized with Docker and deployed to AWS EC2 through an automated CI/CD workflow.</li></ul>
+<div class="met"><span><b>85%</b> relevant chunks in top 5</span><span><b>~30%</b> fewer prompt tokens</span><span><b>~10%</b> fewer hallucinations</span><span><b>1–3s</b> responses</span></div></div>
+<div class="card job"><div class="top"><div><h3>GenAI Intern</h3><p class="co">Smart Interz · Google Cloud-run program</p></div><span class="dt">Jun 2025 – Nov 2025</span></div>
+<ul><li>Built GenAI application modules with the Gemini API and ChromaDB for vector storage and retrieval, applying responsible and ethical AI practices.</li><li>Designed prompt engineering strategies and AI application architectures, and applied generative AI and NLP to content generation and workflow automation.</li></ul>
+<div class="met"><span>Gemini API</span><span>ChromaDB</span><span>Prompt engineering</span><span>NLP</span></div></div>
+</div>
 </section>
 
-<section id="projects">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-tag mono">[ 03 ]</span><span class="sec-title">Projects</span></div>
+<section id="skills"><h2>Skills</h2><p class="sub">What I reach for when building applied LLM systems.</p>
+<div class="sk"><span>LLMs</span><span>RAG</span><span>Prompt engineering</span><span>LangChain</span><span>LangGraph</span><span>CrewAI</span><span>Gemini API</span><span>Embeddings</span><span>ChromaDB</span><span>Python</span><span>FastAPI</span><span>React.js</span><span>MongoDB</span><span>Docker</span><span>AWS EC2</span><span>GitHub Actions</span><span>SQL</span><span>PostgreSQL</span><span>SQLAlchemy</span><span>MCP</span><span>n8n</span><span>JWT auth</span><span>pytest</span><span>PyMuPDF</span><span>Tableau</span></div></section>
 
-    <div class="proj-card tilt">
-      <div class="proj-top">
-        <div class="proj-title">AI Book Generating App</div>
-        <div class="proj-status">shipped</div>
-      </div>
-      <video class="proj-shot" src="bookai-demo.mp4" preload="metadata" autoplay muted loop playsinline controls onerror="this.remove()"></video>
-      <p class="proj-desc">A full-stack AI story generator (FastAPI + Google Gemini) built on a 5-stage multi-agent pipeline for content generation, editing, and summarization. Features a custom CSS 3D interface and a persistent story archive with continue, edit, and regenerate. Deployed on Render with GitHub CI/CD; resolved production issues including SDK migration and secret management.</p>
-      <div class="proj-stack">
-        <span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">Gemini API</span><span class="tag">Jinja2</span><span class="tag">CI/CD</span>
-      </div>
-      <div class="proj-metrics">
-        <span class="metric">top-5 retrieval: <b>85%</b></span>
-        <span class="metric">token savings: <b>~30%</b></span>
-        <span class="metric">response time: <b>1–3s</b></span>
-      </div>
-      <!-- EVAL WRITE-UP: fill in the real details, then uncomment -->
-      <!--
-      <details class="eval-note">
-        <summary class="mono">How I measured the 85% top-5 retrieval</summary>
-        <p><b>Test set:</b> [N] questions written against [N] source documents.<br>
-        <b>Metric:</b> a query counts as a hit if a chunk containing the answer is in the top 5 results (hit rate@5).<br>
-        <b>Setup:</b> chunk size [X], overlap [Y], embedding model [Z], ChromaDB, top_k = 5.<br>
-        <b>Token savings:</b> compared average prompt tokens with top-5 vs top-3 context (~30% lower) while checking output quality on [N] samples.<br>
-        <b>Known limits:</b> [what the test set does not cover].</p>
-      </details>
-      -->
-      <div class="proj-links">
-        <a href="https://bookai-sck2.onrender.com/ui" target="_blank">Live demo ↗</a>
-        <a href="https://github.com/ananya320/bookai" target="_blank">View code ↗</a>
-        <a href="javascript:void(0)" onclick="toggleEmbed('bookaiEmbed', this)" class="embed-toggle">Try it here ⌄</a>
-      </div>
-      <div class="proj-embed" id="bookaiEmbed">
-        <div class="embed-note mono">⏳ Free-tier server — first load can take ~30s to wake up. Short on time? Watch the demo video above.</div>
-        <iframe class="embed-frame" src="about:blank" data-src="https://bookai-sck2.onrender.com/ui" loading="lazy"></iframe>
-      </div>
-    </div>
-
-    <div class="proj-card tilt">
-      <div class="proj-top">
-        <div class="proj-title">Personalized Learning AI</div>
-        <div class="proj-status">shipped</div>
-      </div>
-      <video class="proj-shot" src="learningai-demo.mp4" autoplay muted loop playsinline controls preload="metadata" onerror="this.remove()"></video>
-      <p class="proj-desc">A full-stack adaptive learning platform that uses Elo rating and Bayesian Knowledge Tracing to personalize content difficulty and track mastery in real time. Expectation-Maximization is implemented from scratch to fit model parameters from real user data instead of fixed constants. A TF-IDF RAG pipeline grounds AI-generated content in user-uploaded documents. Deployed across three cloud platforms (Render, Vercel, MongoDB Atlas), with deployment and dependency issues debugged independently.</p>
-      <div class="proj-stack">
-        <span class="tag">FastAPI</span><span class="tag">MongoDB</span><span class="tag">React.js</span><span class="tag">TF-IDF</span><span class="tag">Bayesian Methods</span><span class="tag">Python</span>
-      </div>
-      <div class="proj-links">
-        <a href="https://github.com/ananya320/personalized-learning-ai" target="_blank">View code ↗</a>
-      </div>
-    </div>
-
-    <div class="proj-card tilt">
-      <div class="proj-top">
-        <div class="proj-title">AR Shopping Website</div>
-        <div class="proj-status wip">in progress</div>
-      </div>
-      <p class="proj-desc">An AR shopping platform for real-time 3D product visualization in-browser, targeting sub-2-second asset load times with custom Blender-built assets.</p>
-      <div class="proj-stack">
-        <span class="tag">WebAR</span><span class="tag">Three.js</span><span class="tag">Blender</span>
-      </div>
-      <div class="proj-links">
-        <a href="https://github.com/ananya320" target="_blank">Follow progress ↗</a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-tag mono">[ 04 ]</span><span class="sec-title">Skills</span></div>
-
-    <div class="skill-group">
-      <div class="skill-group-label">AI / ML / GenAI</div>
-      <div class="skill-tags">
-        <span class="skill-tag">LLMs</span><span class="skill-tag">RAG</span><span class="skill-tag">Prompt Engineering</span><span class="skill-tag">Embeddings</span><span class="skill-tag">Vector Search</span><span class="skill-tag">TF-IDF</span><span class="skill-tag">Multi-Agent Systems</span><span class="skill-tag">Agentic Orchestration</span><span class="skill-tag">Retrieval Evaluation</span><span class="skill-tag">Bayesian Knowledge Tracing</span><span class="skill-tag">Expectation-Maximization</span><span class="skill-tag">NLP</span><span class="skill-tag">Machine Learning</span><span class="skill-tag">Deep Learning</span>
-      </div>
-    </div>
-
-    <div class="skill-group">
-      <div class="skill-group-label">Frameworks, APIs &amp; Platforms</div>
-      <div class="skill-tags">
-        <span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span><span class="skill-tag">CrewAI</span><span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Google Gemini API</span><span class="skill-tag">Gemma 3</span><span class="skill-tag">Anthropic Claude API</span><span class="skill-tag">Google Vertex AI</span><span class="skill-tag">Pandas</span><span class="skill-tag">NumPy</span><span class="skill-tag new">n8n</span>
-      </div>
-    </div>
-
-    <div class="skill-group">
-      <div class="skill-group-label">Languages</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Python</span><span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">SQL</span>
-      </div>
-    </div>
-
-    <div class="skill-group">
-      <div class="skill-group-label">Backend, DevOps &amp; Databases</div>
-      <div class="skill-tags">
-        <span class="skill-tag">FastAPI</span><span class="skill-tag">REST APIs</span><span class="skill-tag">React.js</span><span class="skill-tag">MongoDB</span><span class="skill-tag">ChromaDB</span><span class="skill-tag">Docker</span><span class="skill-tag">CI/CD</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">Git</span><span class="skill-tag">AWS (EC2)</span><span class="skill-tag">Render</span><span class="skill-tag">Vercel</span><span class="skill-tag">JDBC</span><span class="skill-tag">Jinja2</span>
-      </div>
-    </div>
-
-    <div class="skill-group">
-      <div class="skill-group-label">Data &amp; Visualization</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Power BI</span><span class="skill-tag">Tableau</span><span class="skill-tag">Excel</span><span class="skill-tag">Statistical Analysis</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="education">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-tag mono">[ 05 ]</span><span class="sec-title">Education</span></div>
-    <div class="edu-card tilt">
-      <div class="edu-degree">B.Tech, Computer Science</div>
-      <div class="edu-school">Dr. A. P. J. Abdul Kalam Technical University, Lucknow</div>
-      <div class="edu-date mono">2022 — 2026 · Graduated July 2026 · First Division</div>
-      <div class="edu-course">Relevant coursework: Machine Learning, NLP, Data Structures & Algorithms, Database Management Systems, Python, React.js</div>
-    </div>
-    <div class="edu-card tilt" style="margin-top:20px;">
-      <div class="edu-degree">Certifications</div>
-      <div class="edu-school">Generative AI Development Program — Smart Interz, run on Google Cloud</div>
-      <div class="edu-date mono">2025</div>
-      <div class="edu-school" style="margin-top:14px;">Anthropic Claude with Google Vertex AI</div>
-      <div class="edu-date mono">2026</div>
-    </div>
-  </div>
-</section>
-
-<footer id="contact">
-  <div class="wrap">
-    <div class="sec-tag mono" style="display:block;margin-bottom:14px;">[ 06 ]</div>
-    <div class="sec-title">Let's talk.</div>
-    <p>Open to AI Engineer roles — reach out directly or find me below.</p>
-    <div class="term reveal">
-      <div class="term-bar"><i></i><i></i><i></i><span>ananya@dev ~ contact</span></div>
-      <div class="term-body">
-        <div><span class="p">$</span> whoami <span class="k">→</span> Ananya Singh Rajvanshi, AI Engineer</div>
-        <div><span class="p">$</span> email <span class="k">→</span> <a href="mailto:singhrajvanshiananya@gmail.com">singhrajvanshiananya@gmail.com</a></div>
-        <div><span class="p">$</span> email2 <span class="k">→</span> <a href="mailto:rajvanshiananyasingh@gmail.com">rajvanshiananyasingh@gmail.com</a></div>
-        <div><span class="p">$</span> phone <span class="k">→</span> <a href="tel:+919336092755">+91 93360 92755</a></div>
-        <div><span class="p">$</span> status <span class="k">→</span> open to AI Engineer roles <span class="caret"></span></div>
-      </div>
-    </div>
-    <div class="contact-row">
-      <a class="btn btn-primary" href="mailto:singhrajvanshiananya@gmail.com">Email me →</a>
-      <a class="btn btn-secondary" href="tel:+919336092755">Call +91 93360 92755</a>
-      <a class="btn btn-secondary" href="resume.pdf" download="Ananya_Singh_Rajvanshi_Resume.pdf">Download résumé ↓</a>
-      <a class="btn btn-secondary" href="https://linkedin.com/in/ananya-singh-rajvanshi-847252276" target="_blank">LinkedIn ↗</a>
-      <a class="btn btn-secondary" href="https://github.com/ananya320" target="_blank">GitHub ↗</a>
-    </div>
-    <div class="foot-bottom">singhrajvanshiananya@gmail.com · rajvanshiananyasingh@gmail.com · +91 93360 92755</div>
-  </div>
-</footer>
-
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <img id="lightboxImg" src="" alt="Project screenshot enlarged">
+<footer id="contact"><h2>Let’s build something that retrieves the right thing.</h2><p style="margin-top:20px"><a class="btn p" href="mailto:singhrajvanshiananya@gmail.com">Email me</a><a class="btn" href="https://www.linkedin.com/in/ananya-singh-rajvanshi-847252276">LinkedIn</a><a class="btn" href="https://github.com/ananya320">GitHub</a></p></footer>
 </div>
 
-<script>
-  function openLightbox(src){
-    document.getElementById('lightboxImg').src = src;
-    document.getElementById('lightbox').classList.add('open');
-  }
-  function closeLightbox(){
-    document.getElementById('lightbox').classList.remove('open');
-  }
+<dialog id="vd"><div class="dl"><h2 id="vt"></h2><video id="vv" controls muted loop playsinline style="width:100%;border-radius:14px;display:block"></video></div><div style="padding:0 28px 24px"><button class="btn" id="vc" type="button">Close</button></div></dialog>
 
-  function toggleEmbed(id, linkEl){
-    const el = document.getElementById(id);
-    const isOpen = el.classList.contains('open');
-    el.classList.toggle('open');
-    linkEl.textContent = isOpen ? 'Try it here ⌄' : 'Hide ^';
-    if(!isOpen){
-      const iframe = el.querySelector('iframe');
-      if(iframe.src === 'about:blank' || !iframe.src){
-        iframe.src = iframe.dataset.src;
-      }
-    }
-  }
+<dialog id="dlg"><div class="dl" id="dc"></div><div style="padding:0 28px 24px"><button class="btn" id="cl" type="button">Close</button></div></dialog>
 
-  // ---- Tilt-on-hover for cards ----
-  function addTilt(el, intensity){
-    intensity = intensity || 8;
-    el.style.transition = 'transform 0.2s ease-out';
-    el.addEventListener('mousemove', function(e){
-      const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      el.style.transform = 'perspective(800px) rotateX(' + (-y*intensity) + 'deg) rotateY(' + (x*intensity) + 'deg) translateZ(4px)';
-    });
-    el.addEventListener('mouseleave', function(){
-      el.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-    });
-  }
-  document.querySelectorAll('.tilt').forEach(function(el){ addTilt(el); });
-
-  // ---- 3D vector-space hero scene ----
-  function initHero3D(){
-    const canvas = document.getElementById('heroCanvas');
-    const wrap = canvas.parentElement;
-    if(!window.THREE || !wrap.clientWidth) return;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(52, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
-    camera.position.set(0, 0, 13);
-
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(wrap.clientWidth, wrap.clientHeight);
-
-    const group = new THREE.Group();
-    const nodes = [];
-    const count = 32;
-    for(let i=0;i<count;i++){
-      const size = 0.26 + Math.random()*0.24;
-      const geo = new THREE.BoxGeometry(size, size, size);
-      const edges = new THREE.EdgesGeometry(geo);
-      const wireMat = new THREE.LineBasicMaterial({ color: 0x3a6d66, transparent:true, opacity:0.6 });
-      const wire = new THREE.LineSegments(edges, wireMat);
-      const fillMat = new THREE.MeshBasicMaterial({ color:0x14203a, transparent:true, opacity:0.55 });
-      const fill = new THREE.Mesh(geo, fillMat);
-      const node = new THREE.Group();
-      node.add(fill); node.add(wire);
-
-      const radius = 4.6 + Math.random()*3.4;
-      const theta = Math.random()*Math.PI*2;
-      const phi = Math.acos((Math.random()*2)-1);
-      node.position.set(
-        radius*Math.sin(phi)*Math.cos(theta),
-        radius*Math.sin(phi)*Math.sin(theta)*0.55,
-        radius*Math.cos(phi)*0.55
-      );
-      node.userData.baseY = node.position.y;
-      node.userData.speed = 0.3 + Math.random()*0.6;
-      node.userData.phase = Math.random()*Math.PI*2;
-      node.userData.fillMat = fillMat;
-      group.add(node);
-      nodes.push(node);
-    }
-    scene.add(group);
-
-    const qGeo = new THREE.SphereGeometry(0.13, 16, 16);
-    const qMat = new THREE.MeshBasicMaterial({ color: 0x5EEAD4 });
-    const queryDot = new THREE.Mesh(qGeo, qMat);
-    scene.add(queryDot);
-
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x5EEAD4, transparent:true, opacity:0.45 });
-    const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(0,0,0)]);
-    const lineObj = new THREE.Line(lineGeo, lineMat);
-    scene.add(lineObj);
-
-    let target = nodes[Math.floor(Math.random()*nodes.length)];
-    let activeFill = null;
-    function highlight(node){
-      if(activeFill){ activeFill.color.set(0x14203a); activeFill.opacity = 0.55; }
-      const fm = node.userData.fillMat;
-      fm.color.set(0x5EEAD4);
-      fm.opacity = 0.75;
-      activeFill = fm;
-    }
-    highlight(target);
-    setInterval(function(){
-      target = nodes[Math.floor(Math.random()*nodes.length)];
-      highlight(target);
-    }, 2400);
-
-    let mouseX = 0, mouseY = 0;
-    window.addEventListener('mousemove', function(e){
-      mouseX = (e.clientX / window.innerWidth) - 0.5;
-      mouseY = (e.clientY / window.innerHeight) - 0.5;
-    });
-
-    const worldPos = new THREE.Vector3();
-    function animate(t){
-      requestAnimationFrame(animate);
-      group.rotation.y += 0.0018;
-      group.children.forEach(function(n){
-        n.position.y = n.userData.baseY + Math.sin(t*0.001*n.userData.speed + n.userData.phase)*0.22;
-        n.rotation.x += 0.004; n.rotation.y += 0.005;
-      });
-      group.updateMatrixWorld(true);
-      target.getWorldPosition(worldPos);
-      lineObj.geometry.setFromPoints([new THREE.Vector3(0,0,0), worldPos]);
-
-      camera.position.x += (mouseX*3.2 - camera.position.x) * 0.03;
-      camera.position.y += (-mouseY*2.2 - camera.position.y) * 0.03;
-      camera.lookAt(0,0,0);
-
-      renderer.render(scene, camera);
-    }
-    requestAnimationFrame(animate);
-
-    window.addEventListener('resize', function(){
-      camera.aspect = wrap.clientWidth / wrap.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(wrap.clientWidth, wrap.clientHeight);
-    });
-  }
-  initHero3D();
-  // Chunk retrieval hero animation
-  const chunks = document.querySelectorAll('.chunk');
-  const scoreVal = document.getElementById('scoreVal');
-  const scoreFill = document.getElementById('scoreFill');
-
-  function runRetrieval(){
-    chunks.forEach(c => c.classList.remove('retrieved'));
-    scoreFill.style.width = '0%';
-    scoreVal.textContent = '0.00';
-
-    setTimeout(() => {
-      let best = null, bestScore = 0;
-      chunks.forEach(c => {
-        const s = parseFloat(c.dataset.score);
-        if(s > bestScore){bestScore = s; best = c;}
-      });
-      best.classList.add('retrieved');
-      scoreFill.style.width = (bestScore*100) + '%';
-
-      let cur = 0;
-      const step = () => {
-        cur += 0.03;
-        if(cur >= bestScore){ cur = bestScore; scoreVal.textContent = cur.toFixed(2); return; }
-        scoreVal.textContent = cur.toFixed(2);
-        requestAnimationFrame(step);
-      };
-      step();
-    }, 600);
-  }
-
-  runRetrieval();
-  setInterval(runRetrieval, 5000);
-</script>
-
-<div id="bot" aria-hidden="true"><svg viewBox="0 0 44 52"><line x1="22" y1="3" x2="22" y2="11" stroke="#5EEAD4" stroke-width="2"/><circle class="ant" cx="22" cy="3" r="3" fill="#5EEAD4"/><rect x="5" y="11" width="34" height="24" rx="8" fill="#111A2E" stroke="#5EEAD4" stroke-width="2"/><circle class="eye" id="botL" cx="15" cy="23" r="3.5"/><circle class="eye" id="botR" cx="29" cy="23" r="3.5"/><rect x="12" y="38" width="20" height="10" rx="4" fill="#1A2540" stroke="#5EEAD4" stroke-width="1.5"/><circle cx="22" cy="43" r="1.8" fill="#F0A868"/></svg></div>
-<div id="progress"></div>
 <script>
 (function(){
-  var bar=document.getElementById('progress');
-  addEventListener('scroll',function(){var h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';},{passive:true});
-  var els=document.querySelectorAll('.proj-card,.edu-card,.tl-item,.skill-group,.stat-row');
-  els.forEach(function(e){e.classList.add('reveal');});
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){var t=x.target;t.classList.add('in');io.unobserve(t);setTimeout(function(){t.classList.remove('reveal','in');},900);}});},{threshold:.12});
-    document.querySelectorAll('.reveal').forEach(function(e){io.observe(e);});
-  }else{document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('in');});}
-  var nodes=document.querySelectorAll('#pipe .pipe-node'),i=0;
-  if(nodes.length){setInterval(function(){nodes.forEach(function(n){n.classList.remove('active');});nodes[i%nodes.length].classList.add('active');i++;},900);}
-  var bot=document.getElementById('bot');
-  if(bot && matchMedia('(pointer:fine)').matches){
-    var mx=innerWidth/2,my=innerHeight/2,bx=mx,by=my,L=document.getElementById('botL'),R=document.getElementById('botR');
-    addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;bot.classList.add('on');},{passive:true});
-    document.addEventListener('mouseleave',function(){bot.classList.remove('on');});
-    document.addEventListener('mouseover',function(e){bot.classList.toggle('hot',!!e.target.closest('a,button,.btn,.skill-tag'));});
-    (function loop(){
-      var tx=mx+16,ty=my+14,dx=tx-bx,dy=ty-by;
-      bx+=dx*.12;by+=dy*.12;
-      var tilt=Math.max(-18,Math.min(18,dx*.25)),bob=Math.sin(Date.now()/260)*2;
-      bot.style.transform='translate('+bx+'px,'+(by+bob)+'px) rotate('+tilt+'deg)';
-      var ex=Math.max(-2,Math.min(2,dx/30)),ey=Math.max(-2,Math.min(2,dy/30));
-      L.setAttribute('cx',15+ex);R.setAttribute('cx',29+ex);L.setAttribute('cy',23+ey);R.setAttribute('cy',23+ey);
-      requestAnimationFrame(loop);
-    })();
-  }
+var C=[
+{l:"Experience summary",t:"Ananya has about one year of hands-on experience as an AI developer, from her GenAI internship at Smart Interz through FrugalX and PerformDigital.",kw:["experience","years","year","long","senior","junior","fresher","hands","developer"]},
+{l:"RAG pipeline at FrugalX",t:"At FrugalX, Ananya built a production RAG pipeline for an AI book-writing app using LangChain, LangGraph and ChromaDB, reaching 85% relevant chunk retrieval within the top-5 results.",kw:["rag","retrieval","chunk","chromadb","embedding","langchain","langgraph","pipeline","vector","retrieve","frugalx"]},
+{l:"Fewer hallucinations",t:"Integrating the Gemini API with prompt engineering reduced the hallucination rate by about 10%.",kw:["hallucination","prompt","gemini","engineering","accuracy","grounded","reduce"]},
+{l:"30% fewer tokens",t:"Limiting context to the top-3 relevant chunks cut prompt token usage by about 30% while keeping output quality, lowering inference cost.",kw:["token","cost","context","inference","cheaper","budget","optimize","top-3"]},
+{l:"Docker and AWS deploy",t:"Ananya containerized the pipeline with Docker and deployed it to AWS EC2 through an automated CI/CD workflow with 1 to 3 second responses.",kw:["docker","deploy","aws","production","latency","speed","cloud","devops","cicd","ec2"]},
+{l:"Multi-agent book app",t:"The AI Book Generating App is a full-stack story generator on FastAPI and Gemini with a 5-stage multi-agent pipeline for generation, editing and summarization, deployed on Render with GitHub CI/CD.",kw:["agent","multi","agentic","orchestration","fastapi","book","workflow","story","render"]},
+{l:"Adaptive learning engine",t:"Personalized Learning AI uses Elo rating and Bayesian Knowledge Tracing to personalize difficulty, with Expectation-Maximization implemented from scratch, on FastAPI, React and MongoDB.",kw:["learning","bayesian","elo","adaptive","mastery","statistics","education","math","machine","ml","em"]},
+{l:"TF-IDF RAG over PDFs",t:"A RAG pipeline with TF-IDF retrieval grounds AI-generated content in user-uploaded documents.",kw:["tfidf","rag","pdf","documents","grounded","search","upload"]},
+{l:"FinPilot",t:"FinPilot is an AI financial reconciliation assistant Ananya built with React, FastAPI, PostgreSQL, Gemini, LangGraph, ChromaDB and Docker. This multi-tenant platform extracts transactions from PDF, CSV and Excel bank statements and invoices, matches invoices to payments with plain-English explanations of mismatches, and answers questions in chat. Its multi-agent LangGraph assistant uses a deterministic verifier so the LLM never does the math, with server-side tenant isolation and an MCP server exposing read-only tools. It has JWT auth with bcrypt hashing, 15 pytest tests and a GitHub Actions CI pipeline.",kw:["finpilot","finance","financial","fintech","money","reconciliation","invoice","invoices","bank","transactions","mcp","jwt","auth","security","tenant","verifier","math","postgresql","pytest","tests","testing"]},
+{l:"GenAI internship",t:"As a GenAI intern at Smart Interz, a Google Cloud-run program, Ananya built modules with the Gemini API and ChromaDB and applied responsible AI practices.",kw:["genai","google","internship","responsible","ethical","smart","interz","gemini"]},
+{l:"PerformDigital automation",t:"As an AI Automation Engineer intern at PerformDigital, Ananya builds LLM workflows with Gemma 3 and agentic integrations that reduce manual effort. FinPilot was built in this role.",kw:["automation","gemma","agentic","workflow","business","performdigital","manual"]},
+{l:"Deloitte analytics",t:"As a Data Analytics intern at Deloitte, Ananya analyzed 1,000+ records with Python and built interactive Tableau dashboards.",kw:["data","tableau","dashboard","analytics","python","deloitte","statistics"]},
+{l:"Education and skills",t:"Ananya holds a B.Tech in Computer Science (July 2026) from Dr. A. P. J. Abdul Kalam Technical University, Lucknow. Skills include Python, Java, C, SQL, FastAPI, React, PostgreSQL, MCP, Docker and AWS.",kw:["btech","education","degree","college","university","skills","python","java","studied","graduate","nlp"]}];
+var $=function(i){return document.getElementById(i)},log=$("log"),q=$("q"),kE=$("k"),hits=[];
+function tk(s){return s.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(function(w){return w.length>1})}
+function mt(a,b){return a===b||(a.length>3&&b.indexOf(a)===0)||(b.length>3&&a.indexOf(b)===0)}
+function retrieve(s,k){var t=tk(s);return C.map(function(c,i){var m=0;c.kw.forEach(function(w){if(t.some(function(x){return mt(x,w)}))m++});return{i:i,s:m}}).filter(function(r){return r.s>0}).sort(function(a,b){return b.s-a.s}).slice(0,k)}
+function add(txt,cls){var d=document.createElement("div");d.className="m"+(cls?" "+cls:"");d.textContent=txt;log.appendChild(d);log.scrollTop=log.scrollHeight;return d}
+var busy=false;
+async function ask(s){
+  s=s.trim();if(!s||busy)return;busy=true;q.value="";add(s,"u");
+  var r=retrieve(s,+kE.value);hits=r.map(function(x){return x.i});pulse();
+  var out=add("Retrieving…");
+  if(!r.length){out.textContent="I couldn’t find anything relevant. Try asking about RAG, agents, deployment, cost or a project.";busy=false;return}
+  var src=document.createElement("div");src.className="src";
+  r.forEach(function(x){var e=document.createElement("span");e.textContent=C[x.i].l;src.appendChild(e)});
+  var ctx=r.map(function(x,n){return"["+(n+1)+"] "+C[x.i].t}).join("\n");
+  var sample=null;try{sample=await claude.use("sample")}catch(e){}
+  if(!sample){out.textContent=C[r[0].i].t;out.appendChild(src);busy=false;return}
+  try{
+    var res=await sample("You answer questions about Ananya Singh Rajvanshi, an AI engineer, for recruiters. Use ONLY the context below. If it does not contain the answer, say so. Never invent facts, numbers or details. Answer in 2-3 friendly sentences.\n\nContext:\n"+ctx+"\n\nQuestion: "+s,{cache:false,modelTier:"quick",onText:function(o){out.textContent=o.text;log.scrollTop=log.scrollHeight}});
+    out.textContent=res.text;
+  }catch(e){out.textContent=C[r[0].i].t}
+  out.appendChild(src);busy=false;log.scrollTop=log.scrollHeight;
+}
+$("go").onclick=function(){ask(q.value)};q.addEventListener("keydown",function(e){if(e.key==="Enter")ask(q.value)});
+kE.oninput=function(){$("kv").textContent=kE.value};
+["How did she reduce hallucination?","How was cost cut?","Has she built agents?","Tell me about FinPilot"].forEach(function(p){var b=document.createElement("button");b.className="chip";b.type="button";b.textContent=p;b.onclick=function(){ask(p)};$("chips").appendChild(b)});
+
+/* 3D graph */
+var pulseT=0;function pulse(){pulseT=performance.now()}
+if(window.THREE){
+  var cv=$("gl"),R=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true}),S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(55,1,.1,50),G=new THREE.Group(),P=[],mx=0,my=0;
+  cam.position.z=6.4;S.add(G);
+  var n=C.length,pos=C.map(function(c,i){var y=1-(i/(n-1))*2,r=Math.sqrt(1-y*y),th=i*2.399963;return new THREE.Vector3(Math.cos(th)*r,y,Math.sin(th)*r).multiplyScalar(2.5)});
+  var geo=new THREE.SphereGeometry(.09,16,16),base=new THREE.Color(0x6B74B8),hit=new THREE.Color(0x3DE3D8);
+  pos.forEach(function(p){var m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:base.clone()}));m.position.copy(p);G.add(m);P.push(m)});
+  var lp=[];pos.forEach(function(a,i){pos.forEach(function(b,j){if(j>i&&a.distanceTo(b)<2.6)lp.push(a.x,a.y,a.z,b.x,b.y,b.z)})});
+  var lg=new THREE.BufferGeometry();lg.setAttribute("position",new THREE.Float32BufferAttribute(lp,3));
+  G.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0x3A4390,transparent:true,opacity:.45})));
+  var hl=new THREE.LineSegments(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0x3DE3D8}));G.add(hl);
+  var qm=new THREE.Mesh(new THREE.SphereGeometry(.14,16,16),new THREE.MeshBasicMaterial({color:0xFFB347}));G.add(qm);
+  function rs(){var b=cv.parentElement.getBoundingClientRect();R.setPixelRatio(Math.min(2,devicePixelRatio||1));R.setSize(b.width+40,b.height,false);cam.aspect=(b.width+40)/b.height;cam.updateProjectionMatrix();cam.position.x=innerWidth>900?-1.6:0}
+  addEventListener("resize",rs);rs();
+  addEventListener("pointermove",function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+  var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  (function loop(t){
+    if(!rm)G.rotation.y+=.0025;G.rotation.x+=(my*.5-G.rotation.x)*.04;
+    var qv=new THREE.Vector3(),w=0,ln=[];
+    P.forEach(function(m,i){var on=hits.indexOf(i)>-1;m.material.color.lerp(on?hit:base,.1);var s=1+(on?1.2+Math.sin(t/200+i)*.2:0);m.scale.setScalar(m.scale.x+(s-m.scale.x)*.12);if(on){qv.add(pos[i]);w++}});
+    if(w){qv.multiplyScalar(.45/w);qm.visible=true;qm.position.lerp(qv,.1);hits.forEach(function(i){ln.push(qm.position.x,qm.position.y,qm.position.z,pos[i].x,pos[i].y,pos[i].z)})}else qm.visible=false;
+    hl.geometry.setAttribute("position",new THREE.Float32BufferAttribute(ln,3));
+    R.render(S,cam);requestAnimationFrame(loop);
+  })(0);
+}
+
+/* pipeline */
+var PJ={
+fin:{s:[["Upload","Statements, invoices"],["Extract","Transactions"],["Match","Invoices to payments"],["Verify","Deterministic checks"],["Explain","Plain English chat"]],
+ d:["Bank statements and invoices come in as PDF, CSV or Excel files, each kept inside the user\u2019s own business workspace.","Transactions are extracted from the documents and stored in PostgreSQL, scoped to the tenant on the server side.","Invoices are matched to payments to find what reconciles and what does not.","A deterministic verifier does the arithmetic, so the LLM never does the math.","A multi-agent LangGraph assistant explains mismatches in plain English and answers questions in chat. An MCP server exposes read-only tools."]},
+book:{s:[["Prompt","User idea"],["Retrieve","Top chunks"],["Generate","Draft text"],["Edit","Refine"],["Summarize","Recap"]],
+ d:["The user describes the story or book they want.","Chunking, embeddings and ChromaDB return only the most relevant context, keeping prompts small and cheap.","A Gemini-backed agent drafts content grounded in the retrieved context.","An editing agent tightens structure and consistency and flags unsupported claims.","A summarizer produces recaps, and finished stories go to a persistent archive."]},
+learn:{s:[["Answer","Learner responds"],["Rate","Elo difficulty"],["Track","Bayesian mastery"],["Fit","EM parameters"],["Personalize","Next content"]],
+ d:["The learner answers a question or completes an activity.","An Elo rating updates for both the learner and the question, so difficulty matches the person.","Bayesian Knowledge Tracing estimates mastery of each topic in real time.","Expectation-Maximization, implemented from scratch, fits the model parameters from real user data instead of fixed constants.","The next content is chosen to fit the learner. A TF-IDF RAG pipeline grounds AI-generated content in the documents they upload."]}
+},g=$("stages"),NS="http://www.w3.org/2000/svg";
+function draw(k){var P=PJ[k];g.innerHTML="";$("pd").textContent="Select a stage.";
+ document.querySelectorAll("#ptabs button").forEach(function(b){var on=b.dataset.k===k;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+ P.s.forEach(function(s,i){var x=10+i*180,e=document.createElementNS(NS,"g");e.setAttribute("class","pn");e.setAttribute("tabindex","0");e.setAttribute("role","button");e.setAttribute("aria-label",s[0]);
+  e.innerHTML='<rect x="'+x+'" y="40" width="140" height="80" rx="16"/><text x="'+(x+70)+'" y="78">'+s[0]+'</text><text class="d" x="'+(x+70)+'" y="100">'+s[1]+'</text>';
+  function sel(){[].forEach.call(g.children,function(c){c.classList.remove("on")});e.classList.add("on");$("pd").textContent=P.d[i]}
+  e.onclick=sel;e.onkeydown=function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();sel()}};g.appendChild(e)});}
+document.querySelectorAll("#ptabs button").forEach(function(b){b.onclick=function(){draw(b.dataset.k)}});
+draw("fin");
+
+/* case studies */
+var CS={
+book:{t:"AI Book Generating App",p:"Long-form generation with LLMs drifts off topic and invents facts, and sending whole documents as context is slow and expensive.",a:["Split the work into a 5-stage multi-agent pipeline for generation, editing and summarization.","Added RAG with chunking, embeddings and ChromaDB so each stage sees only the best context.","Orchestrated stages with LangChain and LangGraph, with Gemini behind prompt-engineered agents."],r:["85% relevant chunks in the top 5 results","About 30% fewer prompt tokens using top-3 context","About 10% lower hallucination rate","1 to 3 second responses on Docker and AWS EC2 with CI/CD","Deployed on Render with GitHub CI/CD, resolving SDK migration and secret management issues"]},
+learn:{t:"Personalized Learning AI",p:"One-size-fits-all difficulty loses learners, and fixed model constants ignore how real users behave.",a:["Used Elo rating and Bayesian Knowledge Tracing to personalize difficulty and track mastery in real time.","Implemented Expectation-Maximization from scratch to fit parameters from real user data.","Added a TF-IDF RAG pipeline so generated content is grounded in uploaded documents."],r:["Full-stack app on FastAPI, React and MongoDB","Deployed across Render, Vercel and MongoDB Atlas","Debugged real deployment and dependency issues independently"]},
+fin:{t:"FinPilot",p:"Reconciling invoices against bank payments across PDF, CSV and Excel files is slow, and LLMs can’t be trusted with the arithmetic.",a:["Built a multi-tenant platform on React, FastAPI and PostgreSQL that extracts transactions from PDF, CSV and Excel and matches invoices to payments with plain-English explanations.","Designed a multi-agent LangGraph assistant with a deterministic verifier, so the LLM never does the math.","Enforced server-side tenant isolation and exposed read-only tools through an MCP server."],r:["JWT authentication with bcrypt password hashing","15 pytest tests and a GitHub Actions CI pipeline","Built and deployed during the PerformDigital internship"]}};
+var dl=$("dlg");
+document.querySelectorAll("[data-p]").forEach(function(b){b.onclick=function(){var c=CS[b.dataset.p],h="<h2></h2><h3>The problem</h3><p></p><h3>The approach</h3><ul></ul><h3>The results</h3><ul></ul>",d=$("dc");d.innerHTML=h;
+ d.querySelector("h2").textContent=c.t;d.querySelector("p").textContent=c.p;var u=d.querySelectorAll("ul");
+ c.a.forEach(function(x){var l=document.createElement("li");l.textContent=x;u[0].appendChild(l)});c.r.forEach(function(x){var l=document.createElement("li");l.textContent=x;u[1].appendChild(l)});dl.showModal()}});
+var vd=$("vd"),vv=$("vv");
+document.querySelectorAll("[data-v]").forEach(function(b){b.onclick=function(){$("vt").textContent=b.dataset.t;vv.src=b.dataset.v;vd.showModal();vv.play().catch(function(){})}});
+function vclose(){vv.pause();vv.removeAttribute("src");vv.load();vd.close()}
+$("vc").onclick=vclose;vd.addEventListener("click",function(e){if(e.target===vd)vclose()});vd.addEventListener("cancel",function(){vv.pause()});
+$("cl").onclick=function(){dl.close()};dl.addEventListener("click",function(e){if(e.target===dl)dl.close()});
 })();
 </script>
 </body>
 </html>
+
